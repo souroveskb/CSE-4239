@@ -38,3 +38,4 @@ To clean up after executing the code we can run the following command in our ter
 make clean
 ```
 
+The jokes are taken from mostly chatgpt.
