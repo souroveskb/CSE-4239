@@ -2,6 +2,7 @@
 #include <sys/socket.h>
 #include <thread>
 #include <jsoncpp/json/json.h>
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -15,6 +16,8 @@ struct KnockKnockJoke
 };
 
 vector<KnockKnockJoke> jokes;
+atomic<int> activeClientCount(0);
+
 
 void loadTheJokes(string fileName){
     
@@ -197,6 +200,7 @@ void handleClient(int clientSocket) {
             } else { data = bufferData; }
             y_n = data;
         }     
+        
 
     }
 
@@ -206,6 +210,13 @@ void handleClient(int clientSocket) {
 
     // Close the client socket
     close(clientSocket);
+    activeClientCount--;
+    cout << "Client Socket closed" << endl;
+
+    if (activeClientCount == 0) {
+            cout << "All clients are disconnected." << endl;
+            exit(0); // Terminate the server when all clients are disconnected
+    }
 }
 
 
@@ -240,7 +251,7 @@ int main() {
     }
 
     // Listen for incoming connections
-    if (listen(serverSocket, 2) == -1) {
+    if (listen(serverSocket, 3) == -1) {
         cerr << "Error listening for connections." << endl;
         close(serverSocket);
         return -1;
@@ -258,9 +269,12 @@ int main() {
             cerr << "Error accepting connection." << endl;
             continue;
         }
+        activeClientCount++;
 
         // Create a new thread to handle the client
         threads.emplace_back(handleClient, clientSocket);
+        cout << "Active Client Count: " << activeClientCount << endl;
+
     }
 
     // Close the server socket (not reachable in this example)
