@@ -5,8 +5,7 @@
 
 #include "matrixOperator.h"
 
-bool_t
-xdr_Matrix (XDR *xdrs, Matrix *objp)
+bool_t xdr_Matrix (XDR *xdrs, Matrix *objp)
 {
 	register int32_t *buf;
 
@@ -21,8 +20,7 @@ xdr_Matrix (XDR *xdrs, Matrix *objp)
 	return TRUE;
 }
 
-bool_t
-xdr_Input (XDR *xdrs, Input *objp)
+bool_t xdr_Input (XDR *xdrs, Input *objp)
 {
 	register int32_t *buf;
 
@@ -35,8 +33,7 @@ xdr_Input (XDR *xdrs, Input *objp)
 	return TRUE;
 }
 
-bool_t
-xdr_Output (XDR *xdrs, Output *objp)
+bool_t xdr_Output (XDR *xdrs, Output *objp)
 {
 	register int32_t *buf;
 

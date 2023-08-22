@@ -16,8 +16,7 @@
 #define SIG_PF void(*)(int)
 #endif
 
-static void
-matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
+static void matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
 		Input add_1_arg;
@@ -78,8 +77,7 @@ matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
 	return;
 }
 
-int
-main (int argc, char **argv)
+int main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
 

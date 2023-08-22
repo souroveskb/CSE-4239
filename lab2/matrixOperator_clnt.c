@@ -9,8 +9,7 @@
 /* Default timeout can be changed using clnt_control() */
 static struct timeval TIMEOUT = { 25, 0 };
 
-Output *
-add_1(Input *argp, CLIENT *clnt)
+Output *add_1(Input *argp, CLIENT *clnt)
 {
 	static Output clnt_res;
 
@@ -24,8 +23,7 @@ add_1(Input *argp, CLIENT *clnt)
 	return (&clnt_res);
 }
 
-Output *
-multiply_1(Input *argp, CLIENT *clnt)
+Output *multiply_1(Input *argp, CLIENT *clnt)
 {
 	static Output clnt_res;
 
@@ -39,8 +37,7 @@ multiply_1(Input *argp, CLIENT *clnt)
 	return (&clnt_res);
 }
 
-Output *
-inverse_1(Input *argp, CLIENT *clnt)
+Output *inverse_1(Input *argp, CLIENT *clnt)
 {
 	static Output clnt_res;
 
@@ -54,8 +51,7 @@ inverse_1(Input *argp, CLIENT *clnt)
 	return (&clnt_res);
 }
 
-Output *
-transpose_1(Input *argp, CLIENT *clnt)
+Output *transpose_1(Input *argp, CLIENT *clnt)
 {
 	static Output clnt_res;
 

@@ -6,8 +6,7 @@
 
 #include "matrixOperator.h"
 
-Output *
-add_1_svc(Input *argp, struct svc_req *rqstp)
+Output *add_1_svc(Input *argp, struct svc_req *rqstp)
 {
 	static Output  result;
 
@@ -18,8 +17,7 @@ add_1_svc(Input *argp, struct svc_req *rqstp)
 	return &result;
 }
 
-Output *
-multiply_1_svc(Input *argp, struct svc_req *rqstp)
+Output *multiply_1_svc(Input *argp, struct svc_req *rqstp)
 {
 	static Output  result;
 
@@ -30,8 +28,7 @@ multiply_1_svc(Input *argp, struct svc_req *rqstp)
 	return &result;
 }
 
-Output *
-inverse_1_svc(Input *argp, struct svc_req *rqstp)
+Output *inverse_1_svc(Input *argp, struct svc_req *rqstp)
 {
 	static Output  result;
 
@@ -42,8 +39,7 @@ inverse_1_svc(Input *argp, struct svc_req *rqstp)
 	return &result;
 }
 
-Output *
-transpose_1_svc(Input *argp, struct svc_req *rqstp)
+Output *transpose_1_svc(Input *argp, struct svc_req *rqstp)
 {
 	static Output  result;
 

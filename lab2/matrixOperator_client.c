@@ -7,8 +7,7 @@
 #include "matrixOperator.h"
 
 
-void
-matrix_operations_1(char *host)
+void matrix_operations_1(char *host, Input input, int id)
 {
 	CLIENT *clnt;
 	Output  *result_1;
@@ -50,16 +49,27 @@ matrix_operations_1(char *host)
 }
 
 
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
 	char *host;
 
 	if (argc < 2) {
-		printf ("usage: %s server_host\n", argv[0]);
-		exit (1);
+		host = "localhost";
+		// printf ("usage: %s server_host\n", argv[0]);
+		// exit (1);
+	} else{
+		host = argv[1];
+
 	}
-	host = argv[1];
-	matrix_operations_1 (host);
+
+
+	Input input;
+	int op_id;
+
+	printf("Choose an Operation:\n");
+	printf("1.Addition\n2.Multiplication\n3.Inverse\n4.Transpose\nSelect: ");
+	scanf("%d", &op_id);
+
+	matrix_operations_1 (host,input,op_id);
 exit (0);
 }
