@@ -6,6 +6,19 @@
 
 #include "matrixOperator.h"
 
+
+void printMatrix(int nrows, int ncols, float* data){
+
+	int currentIndex = 0;
+	for(int i = 0; i < nrows; i++){
+		for(int j = 0; j < ncols; j++){
+			printf("%f ",data[currentIndex++]);
+		}
+		printf("\n");
+	}
+}
+
+
 Output *add_1_svc(Input *argp, struct svc_req *rqstp)
 {
 	static Output  result;
