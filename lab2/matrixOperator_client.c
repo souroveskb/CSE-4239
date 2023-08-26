@@ -7,29 +7,41 @@
 #include "matrixOperator.h"
 
 
-void printMatrix(int nrows, int ncols, float* data){
-
-	int currentIndex = 0;
-	for(int i = 0; i < nrows; i++){
-		for(int j = 0; j < ncols; j++){
-			printf("%f ",data[currentIndex++]);
-		}
-		printf("\n");
-	}
+void inputMatrix(Matrix* M)
+{
+    printf("Enter Matrix :\n");
+    for(int i = 0, k = 0; i < M->nRows; i++) {
+        for(int j = 0; j < M->nColumns; j++, k++) {
+            scanf("%lf", &(M->data[k]));
+        }
+    }
 }
 
 
-void matrix_operations_1(char *host, Input input, int id)
+void printMatrix(Matrix* M){
+
+	printf("Result Matrix :\n");
+    for(int i = 0, k = 0; i < M->nRows; i++) {
+        for(int j = 0; j < M->nColumns; j++, k++) {
+            printf("%.2lf ", (M->data[k]));
+        }
+		printf("\n");
+    }
+}
+
+
+
+void matrix_operations_1(char *host, int op)
 {
 	CLIENT *clnt;
-	Output  *result;
-	// Input  add_1_arg;
-	// Output  *result_2;
-	// Input  multiply_1_arg;
-	// Output  *result_3;
-	// Input  inverse_1_arg;
-	// Output  *result_4;
-	// Input  transpose_1_arg;
+	Matrix  *result_1;
+	Massage  addition_1_arg;
+	Matrix  *result_2;
+	Massage  multiplication_1_arg;
+	Matrix  *result_3;
+	Massage  transpose_1_arg;
+	Matrix  *result_4;
+	Massage  inverse_1_arg;
 
 #ifndef	DEBUG
 	clnt = clnt_create (host, MATRIX_OPERATIONS, MATRIX_VERSION, "udp");
@@ -39,53 +51,97 @@ void matrix_operations_1(char *host, Input input, int id)
 	}
 #endif	/* DEBUG */
 
-	if(id == 1){
-		result = add_1(&input, clnt);
-		if (result == NULL) {
-			clnt_perror(clnt, "call failed:");
+	if(op == 1) {
+
+		
+		printf("number of rows( <= 10) : ");
+		scanf("%d", &(addition_1_arg.A.nRows));
+    	printf("number of columns( <= 10) : ");
+		scanf("%d", &(addition_1_arg.A.nColumns));
+
+        printf("~~~~~~~~~~First matrix~~~~~~~~~~~\n");
+        inputMatrix(&(addition_1_arg.A));
+
+		addition_1_arg.B.nRows = addition_1_arg.A.nRows;
+		addition_1_arg.B.nColumns = addition_1_arg.A.nColumns;
+
+        printf("~~~~~~~~~~Second Matrix~~~~~~~~~~\n");
+        inputMatrix(&(addition_1_arg.B));
+
+        result_1 = addition_1(&addition_1_arg, clnt);
+        if (result_1 == (Matrix *) NULL) {
+            clnt_perror (clnt, "call failed");
+        }
+
+		printMatrix(result_1);
+        
+
+    } else if (op ==2 ){
+		
+    	printf("number of rows( <= 10) : ");
+		scanf("%d", &(multiplication_1_arg.A.nRows));
+    	printf("number of columns( <= 10) : ");
+		scanf("%d", &(multiplication_1_arg.A.nColumns));
+
+
+        printf("~~~~~~~~~~First matrix~~~~~~~~~~~\n");
+        inputMatrix(&(multiplication_1_arg.A));
+
+		multiplication_1_arg.B.nRows = multiplication_1_arg.A.nRows;
+		multiplication_1_arg.B.nColumns = multiplication_1_arg.A.nColumns;
+
+        printf("~~~~~~~~~~Second Matrix~~~~~~~~~~\n");
+        inputMatrix(&(multiplication_1_arg.B));
+		
+		result_2 = multiplication_1(&multiplication_1_arg, clnt);
+		if (result_2 == (Matrix *) NULL) {
+            clnt_perror (clnt, "call failed");
+        }
+        
+		printMatrix(result_2);
+        
+
+    } else if (op == 3){
+
+
+    	printf("number of rows( <= 10) : ");
+		scanf("%d", &(transpose_1_arg.A.nRows));
+    	printf("number of columns( <= 10) : ");
+		scanf("%d", &(transpose_1_arg.A.nColumns));
+
+		printf("~~~~~~~~Enter The Matrix~~~~~~~~~\n");
+        inputMatrix(&(transpose_1_arg.A));
+
+		result_3 = transpose_1(&transpose_1_arg, clnt);
+		if (result_3 == (Matrix *) NULL) {
+			clnt_perror (clnt, "call failed");
 		}
-		if(result->errorCode != 0){
-			printf("Error: %s\n",result->errorMessage);
-		}else{
-			printf("Result:\n");
-			printMatrix(result->result.nRows,result->result.nColumns,result->result.data);
+		
+		printMatrix(result_3);
+	
+	} else {
+
+		printf("order of the matrix( <= 10) : ");
+		scanf("%d", &(inverse_1_arg.A.nRows));
+		inverse_1_arg.A.nColumns = inverse_1_arg.A.nRows;
+    	
+		printf("~~~~~~~~Enter The Matrix~~~~~~~~~\n");
+        inputMatrix(&(inverse_1_arg.A));
+
+		result_4 = inverse_1(&inverse_1_arg, clnt);
+		if (result_4 == (Matrix *) NULL) {
+			clnt_perror (clnt, "call failed");
 		}
 
-	}else if(id == 2){
-		result = multiply_1(&input, clnt);
-		if (result == NULL) {
-			clnt_perror(clnt, "call failed:");
+		if(result_4->nColumns == 0){
+			printf("The determinant is Zero.So inverse of this matrix is not possible!!\n");
+		} else{
+			printMatrix(result_4);
 		}
-		if(result->errorCode != 0){
-			printf("Error: %s\n",result->errorMessage);
-		}else{
-			printf("Result:\n");
-			printMatrix(result->result.nRows,result->result.nColumns,result->result.data);
-		}		
-	}else if(id == 3){
 
-		result = inverse_1(&input, clnt);
-		if (result == NULL) {
-			clnt_perror(clnt, "call failed:");
-		}
-		if(result->errorCode != 0){
-			printf("Error: %s\n",result->errorMessage);
-		}else{
-			printf("Result:\n");
-			printMatrix(result->result.nRows,result->result.nColumns,result->result.data);
-		}
-	}else{
-		result = transpose_1(&input, clnt);
-		if (result == NULL) {
-			clnt_perror(clnt, "call failed:");
-		}
-		if(result->errorCode != 0){
-			printf("Error: %s\n",result->errorMessage);
-		}else{
-			printf("Result:\n");
-			printMatrix(result->result.nRows,result->result.nColumns,result->result.data);
-		}
 	}
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
 
 #ifndef	DEBUG
 	clnt_destroy (clnt);
@@ -93,17 +149,8 @@ void matrix_operations_1(char *host, Input input, int id)
 }
 
 
-void getUserInputMatrix(int numberOfRows, int numberOfCols, float* data){
-	int currentIndex = 0;
-	printf("Enter values for Matrix:\n");
-    for (int i = 0; i < numberOfRows; i++) {
-        for (int j = 0; j < numberOfCols; j++) {
-            scanf("%f", &data[currentIndex++]);
-        }
-    }
-}
-
-int main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
 	char *host;
 
@@ -113,68 +160,22 @@ int main (int argc, char *argv[])
 		// exit (1);
 	} else{
 		host = argv[1];
-
 	}
 
-
-	Input input;
-	int op_id, nrows, ncols;
-
-	printf("Choose an Operation:\n");
-	printf("1.Addition\n2.Multiplication\n3.Inverse\n4.Transpose\nSelect: ");
-	scanf("%d", &op_id);
-
-	if(op_id == 1 || op_id == 2){
-
-		input.numOfMatrices = 2;
-
-    	printf("Enter the number of rows: ");
-    	scanf("%d", &nrows);
-    	printf("Enter the number of columns: ");
-    	scanf("%d", &ncols);
-
-    	getUserInputMatrix(nrows,ncols,input.matrices[0].data);
-		input.matrices[0].nRows = nrows;
-		input.matrices[0].nColumns = ncols;
-
-		getUserInputMatrix(nrows,ncols,input.matrices[1].data);
-		input.matrices[1].nRows = nrows;
-		input.matrices[1].nColumns = ncols;
-
-
-	}else if(op_id == 3){
-
-		input.numOfMatrices = 1;
-
-		printf("Enter the order of the matrix: ");
-    	scanf("%d", &nrows);
-
-		ncols = nrows;
-
-    	getUserInputMatrix(nrows,ncols,input.matrices[0].data);
-		input.matrices[0].nRows = nrows;
-		input.matrices[0].nColumns = ncols;
-
-	}else if(op_id == 4){
-
-		input.numOfMatrices = 1;
-
-		printf("Enter the number of rows: ");
-    	scanf("%d", &nrows);
-    	printf("Enter the number of columns: ");
-    	scanf("%d", &ncols);
-
-    	getUserInputMatrix(nrows,ncols,input.matrices[0].data);
-		input.matrices[0].nRows = nrows;
-		input.matrices[0].nColumns = ncols;
-
-	}else{
-		printf("Invalid input\n");
-		return -1;
-	}
-
-	printf("%d", op_id);
-
-	matrix_operations_1 (host,input,op_id);
+	while(1) {
+		int op_id;
+		printf("Choose an Operation:\n");
+		printf("1.Addition\n2.Multiplication\n3.Transpose\n4.Inverse\n0.Exit\nEnter choice : ");
+		scanf("%d", &op_id);
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        
+        if(op_id >= 1 && op_id <= 4) {
+			matrix_operations_1 (host, op_id);
+        } else if(op_id == 0) {
+            break;
+        } else {
+            printf("Please enter a valid choice.\n");
+        }
+    }
 exit (0);
 }

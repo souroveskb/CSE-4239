@@ -9,56 +9,60 @@
 /* Default timeout can be changed using clnt_control() */
 static struct timeval TIMEOUT = { 25, 0 };
 
-Output *add_1(Input *argp, CLIENT *clnt)
+Matrix *
+addition_1(Massage *argp, CLIENT *clnt)
 {
-	static Output clnt_res;
+	static Matrix clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
-	if (clnt_call (clnt, add,
-		(xdrproc_t) xdr_Input, (caddr_t) argp,
-		(xdrproc_t) xdr_Output, (caddr_t) &clnt_res,
+	if (clnt_call (clnt, addition,
+		(xdrproc_t) xdr_Massage, (caddr_t) argp,
+		(xdrproc_t) xdr_Matrix, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-Output *multiply_1(Input *argp, CLIENT *clnt)
+Matrix *
+multiplication_1(Massage *argp, CLIENT *clnt)
 {
-	static Output clnt_res;
+	static Matrix clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
-	if (clnt_call (clnt, multiply,
-		(xdrproc_t) xdr_Input, (caddr_t) argp,
-		(xdrproc_t) xdr_Output, (caddr_t) &clnt_res,
+	if (clnt_call (clnt, multiplication,
+		(xdrproc_t) xdr_Massage, (caddr_t) argp,
+		(xdrproc_t) xdr_Matrix, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-Output *inverse_1(Input *argp, CLIENT *clnt)
+Matrix *
+transpose_1(Massage *argp, CLIENT *clnt)
 {
-	static Output clnt_res;
-
-	memset((char *)&clnt_res, 0, sizeof(clnt_res));
-	if (clnt_call (clnt, inverse,
-		(xdrproc_t) xdr_Input, (caddr_t) argp,
-		(xdrproc_t) xdr_Output, (caddr_t) &clnt_res,
-		TIMEOUT) != RPC_SUCCESS) {
-		return (NULL);
-	}
-	return (&clnt_res);
-}
-
-Output *transpose_1(Input *argp, CLIENT *clnt)
-{
-	static Output clnt_res;
+	static Matrix clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	if (clnt_call (clnt, transpose,
-		(xdrproc_t) xdr_Input, (caddr_t) argp,
-		(xdrproc_t) xdr_Output, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_Massage, (caddr_t) argp,
+		(xdrproc_t) xdr_Matrix, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+Matrix *
+inverse_1(Massage *argp, CLIENT *clnt)
+{
+	static Matrix clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, inverse,
+		(xdrproc_t) xdr_Massage, (caddr_t) argp,
+		(xdrproc_t) xdr_Matrix, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}

@@ -16,13 +16,14 @@
 #define SIG_PF void(*)(int)
 #endif
 
-static void matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
+static void
+matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		Input add_1_arg;
-		Input multiply_1_arg;
-		Input inverse_1_arg;
-		Input transpose_1_arg;
+		Massage addition_1_arg;
+		Massage multiplication_1_arg;
+		Massage transpose_1_arg;
+		Massage inverse_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -33,28 +34,28 @@ static void matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
 		return;
 
-	case add:
-		_xdr_argument = (xdrproc_t) xdr_Input;
-		_xdr_result = (xdrproc_t) xdr_Output;
-		local = (char *(*)(char *, struct svc_req *)) add_1_svc;
+	case addition:
+		_xdr_argument = (xdrproc_t) xdr_Massage;
+		_xdr_result = (xdrproc_t) xdr_Matrix;
+		local = (char *(*)(char *, struct svc_req *)) addition_1_svc;
 		break;
 
-	case multiply:
-		_xdr_argument = (xdrproc_t) xdr_Input;
-		_xdr_result = (xdrproc_t) xdr_Output;
-		local = (char *(*)(char *, struct svc_req *)) multiply_1_svc;
-		break;
-
-	case inverse:
-		_xdr_argument = (xdrproc_t) xdr_Input;
-		_xdr_result = (xdrproc_t) xdr_Output;
-		local = (char *(*)(char *, struct svc_req *)) inverse_1_svc;
+	case multiplication:
+		_xdr_argument = (xdrproc_t) xdr_Massage;
+		_xdr_result = (xdrproc_t) xdr_Matrix;
+		local = (char *(*)(char *, struct svc_req *)) multiplication_1_svc;
 		break;
 
 	case transpose:
-		_xdr_argument = (xdrproc_t) xdr_Input;
-		_xdr_result = (xdrproc_t) xdr_Output;
+		_xdr_argument = (xdrproc_t) xdr_Massage;
+		_xdr_result = (xdrproc_t) xdr_Matrix;
 		local = (char *(*)(char *, struct svc_req *)) transpose_1_svc;
+		break;
+
+	case inverse:
+		_xdr_argument = (xdrproc_t) xdr_Massage;
+		_xdr_result = (xdrproc_t) xdr_Matrix;
+		local = (char *(*)(char *, struct svc_req *)) inverse_1_svc;
 		break;
 
 	default:
@@ -77,7 +78,8 @@ static void matrix_operations_1(struct svc_req *rqstp, register SVCXPRT *transp)
 	return;
 }
 
-int main (int argc, char **argv)
+int
+main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
 

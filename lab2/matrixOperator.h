@@ -17,54 +17,47 @@ extern "C" {
 struct Matrix {
 	int nRows;
 	int nColumns;
-	float data[1000];
+	double data[100];
 };
 typedef struct Matrix Matrix;
 
-struct Input {
-	int numOfMatrices;
-	Matrix matrices[2];
+struct Massage {
+	Matrix A;
+	Matrix B;
 };
-typedef struct Input Input;
+typedef struct Massage Massage;
 
-struct Output {
-	Matrix result;
-	int errorCode;
-	char errorMessage[50];
-};
-typedef struct Output Output;
-
-#define MATRIX_OPERATIONS 0x18771877
+#define MATRIX_OPERATIONS 0x123456
 #define MATRIX_VERSION 1
 
 #if defined(__STDC__) || defined(__cplusplus)
-#define add 1
-extern  Output * add_1(Input *, CLIENT *);
-extern  Output * add_1_svc(Input *, struct svc_req *);
-#define multiply 2
-extern  Output * multiply_1(Input *, CLIENT *);
-extern  Output * multiply_1_svc(Input *, struct svc_req *);
-#define inverse 3
-extern  Output * inverse_1(Input *, CLIENT *);
-extern  Output * inverse_1_svc(Input *, struct svc_req *);
-#define transpose 4
-extern  Output * transpose_1(Input *, CLIENT *);
-extern  Output * transpose_1_svc(Input *, struct svc_req *);
+#define addition 1
+extern  Matrix * addition_1(Massage *, CLIENT *);
+extern  Matrix * addition_1_svc(Massage *, struct svc_req *);
+#define multiplication 2
+extern  Matrix * multiplication_1(Massage *, CLIENT *);
+extern  Matrix * multiplication_1_svc(Massage *, struct svc_req *);
+#define transpose 3
+extern  Matrix * transpose_1(Massage *, CLIENT *);
+extern  Matrix * transpose_1_svc(Massage *, struct svc_req *);
+#define inverse 4
+extern  Matrix * inverse_1(Massage *, CLIENT *);
+extern  Matrix * inverse_1_svc(Massage *, struct svc_req *);
 extern int matrix_operations_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
-#define add 1
-extern  Output * add_1();
-extern  Output * add_1_svc();
-#define multiply 2
-extern  Output * multiply_1();
-extern  Output * multiply_1_svc();
-#define inverse 3
-extern  Output * inverse_1();
-extern  Output * inverse_1_svc();
-#define transpose 4
-extern  Output * transpose_1();
-extern  Output * transpose_1_svc();
+#define addition 1
+extern  Matrix * addition_1();
+extern  Matrix * addition_1_svc();
+#define multiplication 2
+extern  Matrix * multiplication_1();
+extern  Matrix * multiplication_1_svc();
+#define transpose 3
+extern  Matrix * transpose_1();
+extern  Matrix * transpose_1_svc();
+#define inverse 4
+extern  Matrix * inverse_1();
+extern  Matrix * inverse_1_svc();
 extern int matrix_operations_1_freeresult ();
 #endif /* K&R C */
 
@@ -72,13 +65,11 @@ extern int matrix_operations_1_freeresult ();
 
 #if defined(__STDC__) || defined(__cplusplus)
 extern  bool_t xdr_Matrix (XDR *, Matrix*);
-extern  bool_t xdr_Input (XDR *, Input*);
-extern  bool_t xdr_Output (XDR *, Output*);
+extern  bool_t xdr_Massage (XDR *, Massage*);
 
 #else /* K&R C */
 extern bool_t xdr_Matrix ();
-extern bool_t xdr_Input ();
-extern bool_t xdr_Output ();
+extern bool_t xdr_Massage ();
 
 #endif /* K&R C */
 

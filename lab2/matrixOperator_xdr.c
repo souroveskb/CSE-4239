@@ -5,7 +5,8 @@
 
 #include "matrixOperator.h"
 
-bool_t xdr_Matrix (XDR *xdrs, Matrix *objp)
+bool_t
+xdr_Matrix (XDR *xdrs, Matrix *objp)
 {
 	register int32_t *buf;
 
@@ -14,36 +15,20 @@ bool_t xdr_Matrix (XDR *xdrs, Matrix *objp)
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->nColumns))
 		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->data, 1000,
-		sizeof (float), (xdrproc_t) xdr_float))
+	 if (!xdr_vector (xdrs, (char *)objp->data, 100,
+		sizeof (double), (xdrproc_t) xdr_double))
 		 return FALSE;
 	return TRUE;
 }
 
-bool_t xdr_Input (XDR *xdrs, Input *objp)
+bool_t
+xdr_Massage (XDR *xdrs, Massage *objp)
 {
 	register int32_t *buf;
 
-	int i;
-	 if (!xdr_int (xdrs, &objp->numOfMatrices))
+	 if (!xdr_Matrix (xdrs, &objp->A))
 		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->matrices, 2,
-		sizeof (Matrix), (xdrproc_t) xdr_Matrix))
-		 return FALSE;
-	return TRUE;
-}
-
-bool_t xdr_Output (XDR *xdrs, Output *objp)
-{
-	register int32_t *buf;
-
-	int i;
-	 if (!xdr_Matrix (xdrs, &objp->result))
-		 return FALSE;
-	 if (!xdr_int (xdrs, &objp->errorCode))
-		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->errorMessage, 50,
-		sizeof (char), (xdrproc_t) xdr_char))
+	 if (!xdr_Matrix (xdrs, &objp->B))
 		 return FALSE;
 	return TRUE;
 }
