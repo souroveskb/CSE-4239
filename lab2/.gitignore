@@ -3,3 +3,4 @@
 !Makefile.matrixOperator
 !*.h
 !*.x
+demo.c
